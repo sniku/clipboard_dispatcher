@@ -1,0 +1,18 @@
+{
+  "name": "Content Script execComment",
+  "description":"Content Script execComment",
+  "version": "1.0",
+  "manifest_version": 2,
+  "permissions": [
+    "tabs",
+    "background",
+    "clipboardRead",
+    "clipboardWrite"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["file://*/*"],
+      "js": ["page.js"]
+    }
+  ]
+}

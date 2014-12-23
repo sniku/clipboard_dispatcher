@@ -1,0 +1,16 @@
+{
+  "name": "Clipboard Dispatcher",
+  "description": "Allows execution of arbitrary actions on users computer via clipboard manipulation",
+  "version": "0.1",
+  "permissions": [
+    "tabs",
+    "background",
+    "clipboardRead",
+    "clipboardWrite",
+    "contextMenus"
+  ],
+  "background": {
+    "scripts": ["context.js"]
+  },
+  "manifest_version": 2
+}
