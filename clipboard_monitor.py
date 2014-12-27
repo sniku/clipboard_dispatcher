@@ -2,50 +2,36 @@
 # -*- coding: utf8 -*-
 import json
 import subprocess
+from handlers import skype_handler, pidgin_handler
 from time import sleep
 import dbus
+import handlers.libs.skypelib as skype
+from dbus.mainloop.glib import DBusGMainLoop
 
 last_clip = None
+DBusGMainLoop(set_as_default=True)
 
-def send_pidgin_message(contact, msg):
-    print u'Sending "{}" to {}'.format(msg, contact)
-    bus = dbus.SessionBus()
-    obj = bus.get_object("im.pidgin.purple.PurpleService", "/im/pidgin/purple/PurpleObject")
-    purple = dbus.Interface(obj, "im.pidgin.purple.PurpleInterface")
+skype_dbus_handler = skype.SkypeInterface(dbus.SessionBus(), "PythonSkypeTest")
 
-    account = purple.PurpleAccountsGetAllActive()[0]
-
-    conv = purple.PurpleConversationNew(1, account, contact)
-
-    # msg = "Chrome dispatcher plugin test: " + msg
-
-    if conv:
-        purple.PurpleConvImSend(purple.PurpleConvIm(conv), msg)
+def handle_dispatched_object(dispatched_obj):
+    if dispatched_obj['action']['type'] == 'pidgin':
+        pidgin_handler.send_message(dispatched_obj['action']['target'], dispatched_obj['payload']['content'])
+    elif dispatched_obj['action']['type'] == 'skype':
+        skype_handler.send_message(skype_dbus_handler, dispatched_obj['action']['target'], dispatched_obj['payload']['content'])
     else:
-        print "no converstion created :-( Pidgin disconnected?"
-
+        print "unknown action type", dispatched_obj['action']['type'], 'skipping'
+        print dispatched_obj
 
 while True:
 
-    clip = subprocess.Popen(["xclip","-selection", "clipboard", "-o"], stdout=subprocess.PIPE).communicate()[0]
-
-    #http://stackoverflow.com/questions/764360/a-list-of-string-replacements-in-python
-    # mapping = { "'":'', ',':'', '"':'', ';':'', '(':'', ')':'', '.':'', '-':' '}
-    # for k, v in mapping.iteritems():
-    #     tag = tag.replace(k, v)
-
-    #Camelcase, remove spaces, and append Caesar tag
-    #tag=tag.title().replace(' ','')+"_"
-
-    # print clip
-
+    clip = subprocess.Popen(["xclip", "-selection", "clipboard", "-o"], stdout=subprocess.PIPE).communicate()[0]
     sleep(1)
 
     if last_clip is None:
         print "first run"
         pass
     elif last_clip == clip:
-        print "no change"
+        #print "no change"
         pass
     else:
         print "detected change in the clipboard"
@@ -58,7 +44,7 @@ while True:
             print dispatched_obj
             if 'format' in dispatched_obj and dispatched_obj['format'] == 'clipboard_dispatcher':
                 print type(dispatched_obj['payload']['content'])
-                send_pidgin_message(dispatched_obj['action']['target'], dispatched_obj['payload']['content'])
+                handle_dispatched_object(dispatched_obj)
             else:
                 # Some other json content - skip
                 pass

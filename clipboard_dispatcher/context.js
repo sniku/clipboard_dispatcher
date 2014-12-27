@@ -47,9 +47,10 @@ function handleContextMenuAction(info, tab, action, context) {
 }
 
 var actions = [
-    {name: "Send to yourself ", target: 'nale.sniku@gmail.com'},
-    {name: "Send to nupek ", target: 'natalia.wieczorek@gmail.com'},
-    {name: "Send to rzepak ", target: 'rzepak@gmail.com'}
+    {name: "Send to yourself ", type: 'pidgin', target: 'nale.sniku@gmail.com'},
+//    {name: "Send to nupek ",    type: 'pidgin', target: 'natalia.wieczorek@gmail.com'},
+    {name: "Skype to nupek ",   type: 'skype', target: 'sad.manikin'},
+    {name: "Send to rzepak ",   type: 'pidgin', target: 'rzepak@gmail.com'}
 ];
 
 // Create one test item for each context type.
