@@ -1,6 +1,3 @@
-// Copyright (c) 2010 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
 
 function copyTextToClipboard(text) {
   var copyFrom = document.createElement("textarea");
@@ -46,38 +43,52 @@ function handleContextMenuAction(info, tab, action, context) {
 
 }
 
-var actions = [
-    {name: "Send to yourself ", type: 'pidgin', target: 'nale.sniku@gmail.com'},
-//    {name: "Send to nupek ",    type: 'pidgin', target: 'natalia.wieczorek@gmail.com'},
-    {name: "Skype to nupek ",   type: 'skype', target: 'sad.manikin'},
-    {name: "Send to rzepak ",   type: 'pidgin', target: 'rzepak@gmail.com'}
-];
 
-// Create one test item for each context type.
-var contexts = ["selection", "image", "page"];
+add_context_menus = function(actions){
+    console.log("add_context_menus called");
+    chrome.contextMenus.removeAll();
+    // Create one test item for each context type.
+    var contexts = ["selection", "image", "page"];
 
-for (var i = 0; i < contexts.length; i++) {
-    var context = contexts[i];
-    var onclick_callbacks = {};
+    for (var i = 0; i < contexts.length; i++) {
+        var context = contexts[i];
+        var onclick_callbacks = {};
 
-    for(action_i in actions){
-        action = actions[action_i];
-        title = action.name + "[" + context + "]";
-        console.log(action_i, action, title);
+        for(action_i in actions){
+            action = actions[action_i];
+            title = action.name + "[" + context + "]";
+            console.log(action_i, action, title);
 
-        var onclick = (function(_action, _context){
-            return function(info, tab){
+            var onclick = (function(_action, _context){
+                return function(info, tab){
 
-                handleContextMenuAction(info, tab, _action, _context);
-//                console.log("Closures are fucked up");
-//                console.log(_action);
-//                console.log(_context);
-            };
-        })(action, context);
+                    handleContextMenuAction(info, tab, _action, _context);
+    //                console.log("Closures are fucked up");
+    //                console.log(_action);
+    //                console.log(_context);
+                };
+            })(action, context);
 
-        var id = chrome.contextMenus.create({"title": title, "contexts":[context],"onclick": onclick});
+            var id = chrome.contextMenus.create({"title": title, "contexts":[context],"onclick": onclick});
+        }
     }
+
 }
+
+load_settings = function(){
+    chrome.storage.sync.get("actions", function(obj) {
+        console.log("actions loaded", obj);
+        add_context_menus(obj.actions);
+    });
+}
+
+
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+    load_settings();
+});
+
+load_settings();
 
 //
 //// Create a parent item and two children.
