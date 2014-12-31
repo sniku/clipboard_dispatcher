@@ -12,4 +12,3 @@ def send_message(skype_dbus_handler, skype_name, message):
     skype_dbus_handler.send(msg)
 
 
-# send_message("sad.manikin", u"unicode test öäþåÞŁÖĄŻĘĄ".encode("utf8"))

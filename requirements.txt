@@ -1,2 +1,7 @@
+# python dependencies
+python-dbus
 
-# apt-get install xclip
+# system dependencies
+# xclip
+# screen
+# apt-get install xclip screen

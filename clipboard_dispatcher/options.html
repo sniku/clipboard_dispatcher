@@ -9,34 +9,35 @@
 
 </head>
 <body>
-<h1>Clipboard dispatcher configuration panel</h1>
+    <h1>Clipboard dispatcher configuration panel</h1>
 
-<form>
-    <table id="actions_table">
-        <thead>
-            <tr>
-                <th>Action name</th>
-                <th>type</th>
-                <th>target</th>
+    <form>
+        <table id="actions_table">
+            <thead>
+                <tr>
+                    <th>Action name</th>
+                    <th>type</th>
+                    <th>target</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+        <button id="save_button">Save</button>
+    </form>
+
+
+
+    <div id="resources" style="display: none">
+        <table id="r">
+            <tr id="action_row">
+                <td><input name="name" /></td>
+                <td><input name="type" /></td>
+                <td><input name="target" /></td>
+                <td><img class="delete" src="img/delete.png" alt="delete" title="delete"/> </td>
             </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-    </table>
-    <button id="save_button">Save</button>
-</form>
-
-
-
-<div id="resources" style="display: none">
-    <table id="r">
-        <tr id="action_row">
-            <td><input name="name" /></td>
-            <td><input name="type" /></td>
-            <td><input name="target" /></td>
-        </tr>
-    </table>
-</div>
+        </table>
+    </div>
 </body>
 </html>

@@ -1,11 +1,10 @@
 #!/bin/bash
 
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/clipboard_monitor/
 
 
 PROCESS_NAME='clipboard_monitor.py'
 PID=`pgrep -f ${PROCESS_NAME}`
-
 
 if [ "$PID" ]
  then

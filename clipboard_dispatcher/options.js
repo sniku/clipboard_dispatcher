@@ -37,16 +37,17 @@ save_options = function(){
             name:    $(this).find('input[name=name]').val(),
             type:    $(this).find('input[name=type]').val(),
             target:  $(this).find('input[name=target]').val()
-        }
-        actions[i] = vals;
+        };
 
+        // TODO: add some validation here
+        if(vals.name != "")
+            actions.push(vals);
     });
-    console.log(actions);
-    chrome.storage.sync.set({'actions': actions }, function() {
-      // Notify that we saved.
-      console.log('Settings saved');
+        console.log(actions);
+        chrome.storage.sync.set({'actions': actions }, function() {
+        // Notify that we saved.
+        console.log('Settings saved');
     });
-    actions
 
 
 };
@@ -57,8 +58,15 @@ $(document).ready(function(){
 
     $("#save_button").click(function(e){
         save_options();
-        add_extra_row();
+        if($('#actions_table tbody tr').last().find('input[name=name]').val()!=""){
+            add_extra_row();
+        }
         e.preventDefault();
+    });
+
+    $('#actions_table').on('click', 'img.delete', function() {
+            console.log(this);
+            $(this).parent().parent().remove();
     });
 
 });
