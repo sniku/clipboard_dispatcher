@@ -6,3 +6,5 @@ Chrome extension that allows execution of arbitrary actions on users' computer v
 It adds a right-click menu to images/pages and enables you to execute arbitrary action on image/page URL (send via skype to friend etc). 
 I use it to send links to friends via skype and google-talk (saves me time to copy-paste).
 It requires small daemon running on users' computer to integrate with skype and google-talk. 
+
+Available for free in Chrome Web Store: https://chrome.google.com/webstore/detail/clipboard-dispatcher/ogjlnohnkafeiljmhcccjmfdngfmaoka
