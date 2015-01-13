@@ -1,1 +1,2 @@
-__author__ = 'sniku'
+from pidgin_handler import PidginClient
+from skype_handler import SkypeClient

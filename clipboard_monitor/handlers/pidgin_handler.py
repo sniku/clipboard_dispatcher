@@ -1,17 +1,20 @@
 import dbus
+from base_handler import BaseHandler
 
-def send_message(contact, msg):
-    print u'Sending "{}" to {}'.format(msg, contact)
-    bus = dbus.SessionBus()
-    obj = bus.get_object("im.pidgin.purple.PurpleService", "/im/pidgin/purple/PurpleObject")
-    purple = dbus.Interface(obj, "im.pidgin.purple.PurpleInterface")
 
-    account = purple.PurpleAccountsGetAllActive()[0]
+class PidginClient(BaseHandler):
 
-    conv = purple.PurpleConversationNew(1, account, contact)
+    def init_handler(self):
+        bus = dbus.SessionBus()
+        obj = bus.get_object("im.pidgin.purple.PurpleService", "/im/pidgin/purple/PurpleObject")
+        return dbus.Interface(obj, "im.pidgin.purple.PurpleInterface")
 
-    if conv:
-        purple.PurpleConvImSend(purple.PurpleConvIm(conv), msg)
-    else:
-        print "no converstion created :-( Pidgin disconnected?"
+    def send_message(self, contact, message):
+        message = message.encode("utf8")
+        account = self.handler.PurpleAccountsGetAllActive()[0]
+        conv = self.handler.PurpleConversationNew(1, account, contact)
+        if conv:
+            self.handler.PurpleConvImSend(self.handler.PurpleConvIm(conv), message)
+        else:
+            print "no converstion created :-( Pidgin disconnected?"
 
